@@ -9,6 +9,7 @@ try {
   mongoose.createConnection(constants.MONGO_URL);
 }
 
+mongoose.set("debug", true);
 mongoose.connection
   .once("open", () => console.log("MongoDB Running 🏃‍ 🏃‍"))
   .on("error", error => {

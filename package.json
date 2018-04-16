@@ -13,9 +13,13 @@
     "nodemon": "^1.17.3"
   },
   "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
     "cross-env": "^5.1.4",
     "graphql-yoga": "^1.8.5",
+    "jsonwebtoken": "^8.2.1",
     "merge-graphql-schemas": "^1.5.1",
-    "mongoose": "^5.0.14"
+    "mongoose": "^5.0.14",
+    "mongoose-unique-validator": "^2.0.0",
+    "validator": "^9.4.1"
   }
 }

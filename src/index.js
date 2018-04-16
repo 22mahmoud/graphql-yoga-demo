@@ -3,6 +3,7 @@ import { GraphQLServer } from "graphql-yoga";
 import typeDefs from "./graphql/schema";
 import resolvers from "./graphql/resolvers";
 import constants from "./config/constants";
+import "./config/database";
 
 const options = {
   port: constants.PORT,
@@ -12,9 +13,12 @@ const options = {
 
 const server = new GraphQLServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: req => ({
+    ...req
+  })
 });
 
 server.start(options, () =>
-  console.log(`Server is running on PORT: ${options.port}`)
+  console.log(`Server is running on PORT: ${options.port}  💃  🎉  👌`)
 );
