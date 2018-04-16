@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/index"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-3": "^6.24.1"
+    "babel-preset-stage-3": "^6.24.1",
+    "nodemon": "^1.17.3"
   },
   "dependencies": {
-    "graphql-yoga": "^1.8.5"
+    "graphql-yoga": "^1.8.5",
+    "merge-graphql-schemas": "^1.5.1",
+    "mongoose": "^5.0.14"
   }
 }
