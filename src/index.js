@@ -1,11 +1,13 @@
 import { GraphQLServer } from "graphql-yoga";
+
 import typeDefs from "./graphql/schema";
 import resolvers from "./graphql/resolvers";
+import constants from "./config/constants";
 
 const options = {
-  port: 8000,
-  endpoint: "/graphql",
-  playground: "/playground"
+  port: constants.PORT,
+  endpoint: constants.ENDPOINT_URL,
+  playground: constants.GRAPHQL_PLAYGROUND_URL
 };
 
 const server = new GraphQLServer({
