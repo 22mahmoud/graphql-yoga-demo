@@ -1,15 +1,18 @@
-import User from "../../models/User.model";
 import AuthService from "../../services/Auth.service";
+
+import User from "../../models/User.model";
+import Post from "../../models/Post.model";
 
 export default {
   Query: {
-    me: async (parent, args, ctx) => {
-      const id = AuthService.getUserID(ctx);
-      return await User.findById(id);
+    me: async (parent, args) => {
+      const id = AuthService.getUserID({ context: ctx });
+      const { email, _id, name } = await User.findById(id);
+      return { email, id: _id, name };
     }
   },
   Mutation: {
-    signup: async (_, args, ctx) => {
+    signup: async (_, args) => {
       const user = await User.create(args);
       return {
         token: user.createToken(),

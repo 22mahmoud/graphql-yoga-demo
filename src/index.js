@@ -1,8 +1,11 @@
 import { GraphQLServer } from "graphql-yoga";
 
+import models from "./models";
 import typeDefs from "./graphql/schema";
 import resolvers from "./graphql/resolvers";
 import constants from "./config/constants";
+import AuthService from "./services/Auth.service";
+
 import "./config/database";
 
 const options = {
@@ -14,9 +17,7 @@ const options = {
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
-  context: req => ({
-    ...req
-  })
+  context: req => ({ ...req, models })
 });
 
 server.start(options, () =>

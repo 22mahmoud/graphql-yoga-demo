@@ -52,6 +52,13 @@ UserSchema.methods = {
   },
   createToken() {
     return jwt.sign({ id: this._id }, constants.JWT_SECRET);
+  },
+  toJSON() {
+    return {
+      id: this._id,
+      name: this.name,
+      email: this.email
+    };
   }
 };
 

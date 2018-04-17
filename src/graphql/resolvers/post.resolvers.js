@@ -1,35 +1,68 @@
-let idCount = 0;
-const posts = [];
+import authService from "../../services/Auth.service";
+import User from "../../models/User.model";
+import Post from "../../models/Post.model";
 
 export default {
+  Post: {
+    author: async ({ author }) => {
+      const user = await User.findById(author);
+      return user.toJSON();
+    }
+  },
   Query: {
-    description: () => `This is the API for a simple blogging application`,
-    posts: () => posts,
-    post: (parent, args) => posts.find(post => post.id === args.id)
+    getAllposts: async () => await Post.find({})
   },
   Mutation: {
-    createDraft: (parent, args) => {
-      const post = {
-        id: `post_${idCount++}`,
-        title: args.title,
-        content: args.content,
-        published: false
-      };
-      posts.push(post);
+    createPost: async (_, args, context) => {
+      const userId = authService.requireUser(context);
+
+      const post = await Post.create({ ...args, author: userId });
+
       return post;
     },
-    deletePost: (parent, args) => {
-      const postIndex = posts.findIndex(post => post.id === args.id);
-      if (postIndex > -1) {
-        const deleted = posts.splice(postIndex, 1);
-        return deleted[0];
+    updatePost: async (_, { postId, ...args }, context) => {
+      try {
+        const userId = authService.requireUser(context);
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+          throw new Error("there is no post with this id");
+        }
+
+        if (!post.author.equals(userId)) {
+          throw new Error("You don't have a permission to delete this post ");
+        }
+
+        Object.keys(args).forEach(a => {
+          post[a] = args[a];
+        });
+        return await post.save();
+      } catch (error) {
+        throw error;
       }
-      return null;
     },
-    publish: (parent, args) => {
-      const postIndex = posts.findIndex(post => post.id === args.id);
-      posts[postIndex].published = true;
-      return posts[postIndex];
+
+    deletePost: async (_, { postId }, context) => {
+      try {
+        const userId = authService.requireUser(context);
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+          throw new Error("there is no post with this id");
+        }
+
+        if (!post.author.equals(userId)) {
+          throw new Error("You don't have a permission to delete this post ");
+        }
+
+        await post.remove();
+        return "ok";
+      } catch (error) {
+        throw error;
+        return "failed";
+      }
     }
   }
 };
