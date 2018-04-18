@@ -1,13 +1,18 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-import User from "../models/User.model";
-import constants from "../config/constants";
+import constants from '../config/constants';
 
-const requireUser = context => {
+class AuthError extends Error {
+  constructor() {
+    super('Not authorized');
+  }
+}
+
+const requireUser = (context) => {
   try {
-    const Authorization = context.request.get("Authorization");
+    const Authorization = context.request.get('Authorization');
     if (Authorization) {
-      const token = Authorization.replace("Bearer ", "");
+      const token = Authorization.replace('Bearer ', '');
       const { id } = jwt.verify(token, constants.JWT_SECRET);
       return id;
     }
@@ -18,13 +23,7 @@ const requireUser = context => {
   }
 };
 
-class AuthError extends Error {
-  constructor() {
-    super("Not authorized");
-  }
-}
-
 export default {
   AuthError,
-  requireUser
+  requireUser,
 };

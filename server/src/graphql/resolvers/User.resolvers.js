@@ -1,15 +1,15 @@
-import AuthService from "../../services/Auth.service";
+import AuthService from '../../services/Auth.service';
 
-import User from "../../models/User.model";
-import Post from "../../models/Post.model";
+import User from '../../models/User.model';
+// import Post from '../../models/Post.model';
 
 export default {
   Query: {
-    me: async (parent, args) => {
-      const id = AuthService.getUserID({ context: ctx });
+    me: async (parent, args, ctx) => {
+      const id = AuthService.requireUser(ctx);
       const { email, _id, name } = await User.findById(id);
       return { email, id: _id, name };
-    }
+    },
   },
   Mutation: {
     signup: async (_, args) => {
@@ -19,8 +19,8 @@ export default {
         user: {
           id: user._id,
           name: user.name,
-          email: user.email
-        }
+          email: user.email,
+        },
       };
     },
     login: async (_, { email, password }) => {
@@ -31,7 +31,7 @@ export default {
 
       const valid = user.authanticateUser(password);
       if (!valid) {
-        throw new Error(`Invalid password`);
+        throw new Error('Invalid password');
       }
 
       return {
@@ -39,9 +39,9 @@ export default {
         user: {
           id: user._id,
           name: user.name,
-          email: user.email
-        }
+          email: user.email,
+        },
       };
-    }
-  }
+    },
+  },
 };
