@@ -18,4 +18,14 @@ const CommentSchema = new Schema(
   { timestamps: true },
 );
 
+CommentSchema.methods = {
+  toJSON() {
+    return {
+      id: this._id,
+      text: this.text,
+      author: this.user,
+    };
+  },
+};
+
 export default mongoose.model('Comment', CommentSchema);

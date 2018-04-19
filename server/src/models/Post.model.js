@@ -30,4 +30,24 @@ const PostSchema = new Schema(
   { timestamps: true },
 );
 
+PostSchema.methods = {
+  toJSON() {
+    return {
+      id: this._id,
+      title: this.title,
+      author: this.author,
+      createdAt: this.createdAt,
+    };
+  },
+  incCommentsCount() {
+    this.commentsCount = this.commentsCount + 1;
+    this.save();
+  },
+
+  decCommentsCount() {
+    this.commentsCount = this.commentsCount - 1;
+    this.save();
+  },
+};
+
 export default mongoose.model('Post', PostSchema);

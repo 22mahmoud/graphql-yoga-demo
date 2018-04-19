@@ -1,5 +1,15 @@
 type Comment {
+  id: ID!
   text: String!
-  user: String!
-  post: String!
+  author: User!
+}
+
+type Mutation {
+  commentPost(text: String!, postId: ID!): Comment!
+  updateComment(commentId: ID!, text: String): Comment!
+  deleteComment(commentId: ID!): String!
+}
+
+type Query {
+  getPostComments(postId: ID!): [Comment]!
 }

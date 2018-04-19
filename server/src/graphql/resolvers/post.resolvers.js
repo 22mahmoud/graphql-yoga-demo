@@ -9,6 +9,7 @@ export default {
       return user.toJSON();
     },
   },
+
   Query: {
     getAllposts: async () => {
       try {
@@ -18,7 +19,18 @@ export default {
         throw error;
       }
     },
+
+    getPost: async (_, { postId }) => {
+      try {
+        const post = await Post.findById(postId);
+        if (!post) throw Error('Post not Found!');
+        return post;
+      } catch (error) {
+        throw error;
+      }
+    },
   },
+
   Mutation: {
     createPost: async (_, args, context) => {
       const userId = authService.requireUser(context);
@@ -27,6 +39,7 @@ export default {
 
       return post;
     },
+
     updatePost: async (_, { postId, ...args }, context) => {
       try {
         const userId = authService.requireUser(context);
@@ -68,7 +81,6 @@ export default {
         return 'ok';
       } catch (error) {
         throw error;
-        return 'failed';
       }
     },
   },
