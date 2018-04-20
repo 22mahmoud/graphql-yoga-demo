@@ -14,6 +14,10 @@ const CommentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Post',
     },
+    votesCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );
@@ -25,6 +29,15 @@ CommentSchema.methods = {
       text: this.text,
       author: this.user,
     };
+  },
+};
+
+CommentSchema.statics = {
+  incVotesCount(postId) {
+    return this.findByIdAndUpdate(postId, { $inc: { votesCount: 1 } });
+  },
+  decVotesCount(postId) {
+    return this.findByIdAndUpdate(postId, { $inc: { votesCount: -1 } });
   },
 };
 

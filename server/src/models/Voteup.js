@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
-const LikeSchema = new Schema(
+const VoteupSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -8,10 +8,10 @@ const LikeSchema = new Schema(
     },
     post: {
       type: Schema.Types.ObjectId,
-      ref: 'Post',
+      ref: 'Comment',
     },
   },
   { timestamps: true },
 );
 
-export default mongoose.model('Comment', LikeSchema);
+export default mongoose.model('Voteup', VoteupSchema);

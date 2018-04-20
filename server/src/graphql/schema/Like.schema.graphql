@@ -1,0 +1,12 @@
+type Like {
+  id: ID!
+  user: User!
+}
+
+type Query {
+  getPostLikes(postId: ID!): [Like]!
+}
+
+type Mutation {
+  LikePostToggle(postId: ID!): Boolean!
+}

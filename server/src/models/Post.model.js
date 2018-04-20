@@ -48,6 +48,16 @@ PostSchema.methods = {
     this.commentsCount = this.commentsCount - 1;
     this.save();
   },
+
+  incLikesCount() {
+    this.likesCount = this.likesCount + 1;
+    this.save();
+  },
+
+  decLikesCount() {
+    this.likesCount = this.likesCount - 1;
+    this.save();
+  },
 };
 
 export default mongoose.model('Post', PostSchema);
